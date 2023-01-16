@@ -1,0 +1,56 @@
+# Build outputs
+**/bin/
+**/obj/
+**/out/
+**/dist/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+*.sln.iml
+
+# Node/Angular
+node_modules/
+npm-debug.log
+yarn-error.log
+**/.angular/
+
+# Environment files
+.env
+.env.local
+.env.production
+.env.development
+*.secrets.json
+
+# Test results
+**/TestResults/
+**/coverage/
+**/coverage.xml
+
+# Docker
+**/docker-compose.override.yml
+
+# Logs
+**/logs/
+*.log
+**/wwwroot/logs/
+
+# Azure Functions
+**/local.settings.json
+
+# Publish profiles
+**/*.pubxml.user
+
+# Database
+**/*.mdf
+**/*.ldf
+
+# OS generated
+.DS_Store
+Thumbs.db
