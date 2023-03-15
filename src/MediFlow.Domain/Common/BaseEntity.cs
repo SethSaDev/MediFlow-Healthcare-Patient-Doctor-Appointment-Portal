@@ -1,3 +1,5 @@
+using MediatR;
+
 namespace MediFlow.Domain.Common;
 
 public abstract class BaseEntity

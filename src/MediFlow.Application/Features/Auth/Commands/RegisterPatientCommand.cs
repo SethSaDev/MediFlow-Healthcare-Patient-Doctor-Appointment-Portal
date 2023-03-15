@@ -1,5 +1,8 @@
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using MediFlow.Application.Common.Exceptions;
 using MediFlow.Application.Common.Interfaces;
+using MediFlow.Domain.Entities;
 
 namespace MediFlow.Application.Features.Auth.Commands;
 

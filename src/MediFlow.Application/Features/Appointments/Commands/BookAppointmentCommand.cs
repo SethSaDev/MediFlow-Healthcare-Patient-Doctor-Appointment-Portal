@@ -1,4 +1,7 @@
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using MediFlow.Application.Common.Exceptions;
+using MediFlow.Application.Common.Interfaces;
 using MediFlow.Application.Common.Security;
 using MediFlow.Domain.Entities;
 using MediFlow.Domain.Enums;
@@ -42,10 +45,11 @@ public class BookAppointmentCommandHandler : IRequestHandler<BookAppointmentComm
             .FirstOrDefaultAsync(p => p.UserId == _currentUserService.UserId, cancellationToken);
             
         if (patient == null)
-            throw new NotFoundException(nameof(Patient), _currentUserService.UserId);
+            throw new NotFoundException(nameof(Patient), _currentUserService.UserId?.ToString() ?? "anonymous");
             
         // Check if doctor exists and is available
         var doctor = await _context.Doctors
+            .Include(d => d.User)
             .Include(d => d.WorkingHours)
             .FirstOrDefaultAsync(d => d.Id == request.DoctorId && d.IsAvailable, cancellationToken);
             
@@ -100,7 +104,18 @@ public class BookAppointmentCommandHandler : IRequestHandler<BookAppointmentComm
             Action = "Create",
             EntityType = nameof(Appointment),
             EntityId = appointment.Id,
-            NewValues = System.Text.Json.JsonSerializer.Serialize(appointment),
+            // Serialize scalar fields only: the tracked entity has navigation cycles (Patient -> Appointments -> Patient).
+            NewValues = System.Text.Json.JsonSerializer.Serialize(new
+            {
+                appointment.Id,
+                appointment.PatientId,
+                appointment.DoctorId,
+                appointment.AppointmentDate,
+                appointment.StartTime,
+                appointment.EndTime,
+                appointment.Status,
+                appointment.Reason
+            }),
             IpAddress = _currentUserService.IpAddress,
             Timestamp = DateTime.UtcNow
         });

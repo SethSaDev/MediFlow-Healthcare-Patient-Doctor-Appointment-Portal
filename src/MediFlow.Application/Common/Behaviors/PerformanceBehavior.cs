@@ -27,8 +27,9 @@ public class PerformanceBehavior<TRequest, TResponse> : IPipelineBehavior<TReque
         if (elapsedMilliseconds > 500)
         {
             var requestName = typeof(TRequest).Name;
-            _logger.LogWarning("Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@Request}", 
-                requestName, elapsedMilliseconds, request);
+            // The request body is deliberately not logged: commands carry passwords and clinical data.
+            _logger.LogWarning("Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds)",
+                requestName, elapsedMilliseconds);
         }
         
         return response;

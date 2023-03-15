@@ -17,6 +17,9 @@ public interface IApplicationDbContext
     DbSet<QueueEntry> QueueEntries { get; }
     DbSet<AuditLog> AuditLogs { get; }
     DbSet<SystemSetting> SystemSettings { get; }
+    DbSet<TimeOffBlock> TimeOffBlocks { get; }
+
+    DbSet<TEntity> Set<TEntity>() where TEntity : class;
     
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
